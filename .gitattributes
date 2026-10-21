@@ -1,0 +1,5 @@
+# Końce linii zawsze LF — skrypty (wp.sh, PHP) uruchamiane są w kontenerach Linuksa
+* text=auto eol=lf
+*.jpg binary
+*.png binary
+*.webp binary
