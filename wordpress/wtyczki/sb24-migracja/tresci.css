@@ -1,0 +1,94 @@
+/* Klasy używane w treściach stron, wpisów i opisów z Shopera (siatka f-row, naprawa, skup złota, tabele, przyciski).
+   Reguły 1:1 ze skórki Shopera (skin.css: siatka + CSS użytkownika); zmiany tylko tam, gdzie wymaga tego motyw. */
+
+/* Siatka Shopera */
+.f-row { width: 100%; }
+.f-row::before, .f-row::after { display: table; content: ''; line-height: 0; }
+.f-row::after { clear: both; }
+.f-row [class*='f-grid'] { display: block; float: left; width: 100%; min-height: 30px; margin-left: 2.1276595745%; box-sizing: border-box; }
+.f-row [class*='f-grid']:first-child { margin-left: 0; }
+.f-row .f-grid-1 { width: 6.3829787234%; }
+.f-row .f-grid-2 { width: 14.8936170213%; }
+.f-row .f-grid-3 { width: 23.4042553191%; }
+.f-row .f-grid-4 { width: 31.914893617%; }
+.f-row .f-grid-5 { width: 40.4255319149%; }
+.f-row .f-grid-6 { width: 48.9361702128%; }
+.f-row .f-grid-7 { width: 57.4468085106%; }
+.f-row .f-grid-8 { width: 65.9574468085%; }
+.f-row .f-grid-9 { width: 74.4680851064%; }
+.f-row .f-grid-10 { width: 82.9787234043%; }
+.f-row .f-grid-11 { width: 91.4893617021%; }
+.f-row .f-grid-12 { width: 100%; }
+/* kolumny f-grid-6 w flexie: inline margin-top/bottom:auto z treści Shopera (wyśrodkowanie w pionie) zaczyna działać */
+@media (min-width: 768px) {
+	.f-row:has(> .f-grid-6) { display: flex; align-items: flex-start; gap: 0 2.1276595745%; }
+	.f-row:has(> .f-grid-6)::before, .f-row:has(> .f-grid-6)::after { display: none; }
+	.f-row:has(> .f-grid-6) > [class*='f-grid'] { float: none; margin-left: 0; }
+}
+@media (max-width: 767px) { /* jak .rwd w Shoperze: kolumny jedna pod drugą */
+	.f-row [class*='f-grid'] { width: 100% !important; margin-left: 0 !important; margin-bottom: 1.5em; }
+}
+.f-row img { max-width: 100%; height: auto; }
+
+/* resetcss (stare treści z edytora Shopera) */
+.resetcss ul { padding-left: 40px; list-style-type: disc; }
+.resetcss ol { padding-left: 40px; list-style-position: outside; }
+.resetcss p, .resetcss ol, .resetcss ul { margin: 1em 0; }
+.resetcss table, .resetcss tr, .resetcss td { border-collapse: initial; }
+
+/* Naprawa biżuterii */
+.img-naprawa { border: solid 3px #c8bd81; border-radius: 20px; padding: 20px; width: 128px; margin-left: auto; margin-right: auto; }
+.img-naprawa img { display: block; width: 100%; height: auto; }
+.txt-naprawa { text-align: center; padding-right: 10px; padding-left: 10px; }
+.txt-naprawa h4 { margin-top: 1em; }
+.btn-bg-naprawa {
+	max-width: 900px; margin: 2em auto; min-height: 200px; border-radius: 20px; background-size: cover; background-position: center;
+	background-image: radial-gradient(circle at top left, rgba(40, 40, 40, .69) 0%, rgba(40, 40, 40, .76) 100%), url('img/warsztat.jpg');
+}
+.btn-naprawa { width: 240px; margin-left: auto; margin-right: auto; padding-top: 100px; }
+a.myButton1, .myButton1 {
+	background-color: #c8bd81; border-radius: 28px; border: 1px solid #c8bd81; display: inline-block; cursor: pointer;
+	color: #fff; font-family: Arial, sans-serif; font-size: 17px; padding: 16px 31px; text-decoration: none; text-shadow: 0 1px 0 #2f6627;
+}
+a.myButton1:hover, .myButton1:hover { background-color: #b1a24e; color: #000; }
+.myButton1:active { position: relative; top: 1px; }
+
+/* Skup złota — trzy kroki z ikonami */
+.rowszo1 { width: 70%; margin-left: auto; margin-right: auto; }
+.rowszo1::after { content: ''; display: table; clear: both; }
+.columnszo1 { float: left; width: 33.33%; }
+.imgszo { width: 128px; height: 128px; display: block; margin-left: auto; margin-right: auto; }
+.szot1 { text-align: center; }
+@media (max-width: 600px) { .rowszo1 { width: 100%; } }
+
+/* Zdjęcie z podpisem (img-wrap) */
+.img-main { max-width: 640px; height: 360px; z-index: 1; }
+.img-main:hover { transition-duration: 2s; transform: scale(1.5); filter: blur(1px); }
+.img-wrap { display: inline-block; overflow: hidden; position: relative; }
+.second-txt { position: absolute; bottom: 0; left: 10px; background-color: rgba(40, 40, 40, .76); color: #c8bd81; padding: 15px; width: 95%; }
+
+/* Tabele .sb (np. rozmiary, próby złota) */
+table.sb { width: 100%; }
+.sb { border-collapse: collapse; border-spacing: 0; }
+.sb td, .sb th { font-family: Arial, sans-serif; font-size: 14px; padding: 14px; border-style: solid; border-width: 1px; overflow: hidden; word-break: normal; }
+.sb th { font-weight: normal; }
+.sb .sb-48nw { font-size: 100%; background-color: #b4aa74; color: #fff; text-align: center; }
+.sb .sb-83oq { background-color: #78714d; color: #fff; text-align: center; vertical-align: top; }
+.sb .sb-804w { text-align: center; vertical-align: top; }
+.sb .sb-lap0 { font-size: 100%; text-align: center; vertical-align: top; }
+.sb .sb-1id5 { background-color: #c8bd81; color: #fff; text-align: center; }
+.sb .sb-yyob { font-size: 100%; background-color: #78714d; color: #fff; text-align: center; vertical-align: top; }
+.sb .sb-rkfv { font-size: 100%; text-align: center; vertical-align: top; }
+.sb .sb-3wy2 { font-size: 100%; background-color: #78714d; color: #fff; text-align: center; vertical-align: top; }
+
+.pro-tip { background-color: blanchedalmond; padding: 15px; margin-top: 15px; }
+
+/* Salon firmowy: mapa obok tekstu (float z Shopera), na telefonie pod spodem na całą szerokość */
+.entry-content iframe[src*='google.com/maps'] { max-width: 100%; }
+@media (max-width: 767px) {
+	.entry-content p[style*='float'] { float: none !important; }
+	.entry-content iframe[src*='google.com/maps'] { width: 100%; }
+}
+/* godziny otwarcia (blok skopiowany kiedyś z Google, klasa wDYxhc) — zwarte jak w Shoperze */
+.entry-content .wDYxhc p { margin: .55em 0; line-height: 1.4; }
+.entry-content .wDYxhc p:has(> span) { margin: .4em 0; }

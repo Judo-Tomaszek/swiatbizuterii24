@@ -1,0 +1,37 @@
+/* Baner w nagłówku kategorii, stron informacyjnych, bloga, sklepu i wyników wyszukiwania (hero Kadence, banner layout 2 Astry); adres zdjęcia w --sb24-baner (sb24_baner()). */
+.sb24-z-banerem .entry-hero .entry-hero-container-inner {
+	background: linear-gradient(90deg, rgba(26, 16, 21, .82) 0%, rgba(26, 16, 21, .55) 45%, rgba(26, 16, 21, 0) 75%),
+		var(--sb24-baner) right center / cover no-repeat;
+}
+.sb24-z-banerem .entry-hero.entry-hero .entry-header { /* podwójna klasa: Kadence ustawia min-height stron w swoim CSS */
+	min-height: 320px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; text-align: left;
+}
+.sb24-z-banerem .entry-hero h1 { color: #fff; font-size: clamp(2rem, 4vw, 3rem); }
+.sb24-z-banerem .entry-hero .kadence-breadcrumbs,
+.sb24-z-banerem .entry-hero .kadence-breadcrumbs a,
+.sb24-z-banerem .entry-hero .archive-description { color: #e8e1c8; }
+@media (max-width: 767px) {
+	.sb24-z-banerem .entry-hero.entry-hero .entry-header { min-height: 200px; }
+	.sb24-z-banerem .entry-hero .entry-hero-container-inner {
+		background: linear-gradient(rgba(26, 16, 21, .6), rgba(26, 16, 21, .6)), var(--sb24-baner) 70% center / cover no-repeat;
+	}
+}
+
+/* Astra: „Banner Layout 2” (section.ast-archive-entry-banner / .ast-single-entry-banner) */
+.sb24-z-banerem .ast-archive-entry-banner,
+.sb24-z-banerem .ast-single-entry-banner {
+	background: linear-gradient(90deg, rgba(26, 16, 21, .82) 0%, rgba(26, 16, 21, .55) 45%, rgba(26, 16, 21, 0) 75%),
+		var(--sb24-baner) right center / cover no-repeat;
+	min-height: 320px; display: flex; align-items: center; padding-top: 2rem; padding-bottom: 2rem;
+}
+.sb24-z-banerem :is(.ast-archive-entry-banner, .ast-single-entry-banner) > .ast-container { flex-direction: column; align-items: flex-start; text-align: left; }
+.sb24-z-banerem :is(.ast-archive-entry-banner, .ast-single-entry-banner) h1 { color: #fff; font-size: clamp(2rem, 4vw, 3rem); margin: 0; }
+.sb24-z-banerem :is(.ast-archive-entry-banner, .ast-single-entry-banner) :is(.ast-breadcrumbs, .ast-breadcrumbs a, .woocommerce-breadcrumb, .woocommerce-breadcrumb a) { color: #e8e1c8; }
+@media (max-width: 767px) {
+	.sb24-z-banerem .ast-archive-entry-banner,
+	.sb24-z-banerem .ast-single-entry-banner {
+		min-height: 200px;
+		background: linear-gradient(rgba(26, 16, 21, .6), rgba(26, 16, 21, .6)), var(--sb24-baner) 70% center / cover no-repeat;
+	}
+	.sb24-z-banerem :is(.ast-archive-entry-banner, .ast-single-entry-banner) > .ast-container { padding-left: 20px; padding-right: 20px; }
+}

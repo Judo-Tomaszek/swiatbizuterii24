@@ -1,0 +1,20 @@
+# Sekrety: klucze API Shopera, WooCommerce REST, hasła WordPressa
+.env
+.env.*
+!.env.example
+
+# Surowe eksporty z API Shopera — dane osobowe klientów i zamówienia, nie wersjonujemy
+dane/
+
+# Pliki tymczasowe i zależności
+tmp/
+node_modules/
+__pycache__/
+.venv/
+
+# Obsidian — stan okien jest per maszyna, konfiguracja vaultu (app.json, core-plugins.json) zostaje
+.obsidian/workspace*.json
+.obsidian/cache
+
+# Claude Code — ustawienia lokalne
+.claude/settings.local.json

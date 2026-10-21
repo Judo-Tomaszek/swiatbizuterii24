@@ -1,0 +1,79 @@
+# Lokalny WordPress + WooCommerce do prób importu z Shopera.
+# Start:   docker compose up -d          → http://localhost:8080 (panel: /wp-admin)
+# WP-CLI:  docker compose run --rm wpcli <polecenie>
+# Hasła z .env (WP_DB_PASSWORD, WP_DB_ROOT_PASSWORD, WP_ADMIN_PASSWORD) — wzór w .env.example.
+# Baza nie jest wystawiona na zewnątrz (3306 zajmuje lokalny XAMPP).
+name: swiatbizuterii24
+
+services:
+  db:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: ${WP_DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${WP_DB_ROOT_PASSWORD}
+    volumes:
+      - db:/var/lib/mysql
+
+  wordpress:
+    # Obraz daje tylko pliki startowe; wersję WP w wolumenie podnosi `skrypty/wp.sh core update`
+    # (WooCommerce 10.x wymaga WP 7.0, a obraz 6.8 jest za stary).
+    image: wordpress:php8.3-apache
+    restart: unless-stopped
+    depends_on: [db]
+    ports:
+      - "8080:80"
+    # Apache słucha też na 8080: WordPress woła sam siebie pod adresem strony (http://localhost:8080 — WP-Cron,
+    # harmonogram akcji WooCommerce, Kondycja witryny). Bez tego zadania w tle nigdy się nie wykonują.
+    command: >-
+      bash -c "grep -q '^Listen 8080' /etc/apache2/ports.conf || { echo 'Listen 8080' >> /etc/apache2/ports.conf;
+      sed -i 's/<VirtualHost \*:80>/<VirtualHost *:80 *:8080>/' /etc/apache2/sites-available/000-default.conf; };
+      exec docker-entrypoint.sh apache2-foreground"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_MEMORY_LIMIT', '512M');
+        define('WP_ENVIRONMENT_TYPE', 'local');
+      # Poczta sklepu (SMTP) — dane tylko w .env; czyta je wtyczka sb24-migracja (sekcja „poczta”).
+      SB24_SMTP_HOST: ${SB24_SMTP_HOST:-}
+      SB24_SMTP_PORT: ${SB24_SMTP_PORT:-587}
+      SB24_SMTP_USER: ${SB24_SMTP_USER:-}
+      SB24_SMTP_PASSWORD: ${SB24_SMTP_PASSWORD:-}
+      SB24_MAILPIT: ${SB24_MAILPIT:-}
+    volumes:
+      - wp:/var/www/html
+      - ./wordpress/wtyczki/sb24-migracja:/var/www/html/wp-content/plugins/sb24-migracja
+
+  wpcli:
+    image: wordpress:cli-php8.3
+    profiles: [narzedzia]
+    depends_on: [db, wordpress]
+    user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD}
+      WP_CLI_CACHE_DIR: /tmp/wp-cli-cache
+      WORDPRESS_CONFIG_EXTRA: |  # wp-config.php czyta to ze środowiska — bez tego WP-CLI widzi środowisko „production”
+        define('WP_MEMORY_LIMIT', '512M');
+        define('WP_ENVIRONMENT_TYPE', 'local');
+      SB24_SMTP_HOST: ${SB24_SMTP_HOST:-}
+      SB24_SMTP_PORT: ${SB24_SMTP_PORT:-587}
+      SB24_SMTP_USER: ${SB24_SMTP_USER:-}
+      SB24_SMTP_PASSWORD: ${SB24_SMTP_PASSWORD:-}
+      SB24_MAILPIT: ${SB24_MAILPIT:-}
+    volumes:
+      - wp:/var/www/html
+      - ./wordpress/wtyczki/sb24-migracja:/var/www/html/wp-content/plugins/sb24-migracja
+      - ./skrypty/import:/import/skrypty:ro
+      - ./dane/eksport:/import/dane:ro
+
+volumes:
+  db:
+  wp:

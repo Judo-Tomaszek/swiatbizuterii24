@@ -1,0 +1,34 @@
+/* Harmonijka FAQ 1:1 ze skórki Shopera (nav.accordion-faq w treściach: Pierścionki zaręczynowe, Skup złota,
+   Kształty diamentów). Działa bez JS: radio #cbN otwiera pytanie, #acc-close zamyka. Reguły skopiowane
+   z arkusza skórki (skins/store_user/…/cache/sfc/…css, 2026-10-17) — nie zmieniać bez porównania z oryginałem. */
+.faq{margin-bottom:0px}
+.accordion-faq{margin:auto;width:100%}
+.accordion-faq input{display:none}
+.box-faq{position:relative;background:white;height:64px;transition:all .15s ease-in-out}
+.box-faq::before{content:'';position:absolute;display:block;top:0;bottom:0;left:0;right:0;pointer-events:none;box-shadow:0 -1px 0 #e5e5e5,0 0 2px rgba(0,0,0,0.12),0 2px 4px rgba(0,0,0,0.24)}
+header.box-faq{background:#C8BD81;padding-bottom:0px;z-index:100;cursor:initial;box-shadow:0 -1px 0 #e5e5e5,0 0 2px -2px rgba(0,0,0,0.12),0 2px 4px -4px rgba(0,0,0,0.24)}
+header .box-title-faq{margin:0;font-weight:normal;font-size:16pt;color:white;cursor:initial}
+.box-title-faq{width:calc(90%);height:64px;line-height:64px;padding:0 20px;display:inline-block;cursor:pointer;-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+.box-content-faq{width:calc(80%);padding:10px 20px 30px 20px;font-size:11pt;color:rgba(0,0,0,0.54);display:none}
+.box-close-faq{position:absolute;height:64px;width:100%;top:0;left:0;cursor:pointer;display:none}
+input:checked+.box-faq{height:auto;margin:16px 0;box-shadow:0 0 6px rgba(0,0,0,0.16),0 6px 12px rgba(0,0,0,0.32)}
+input:checked+.box-faq .box-title-faq{border-bottom:1px solid rgba(0,0,0,0.18)}
+input:checked+.box-faq .box-content-faq,input:checked+.box-faq .box-close-faq{display:inline-block}
+.arrows-faq section .box-title-faq{padding-left:44px;width:calc(80%)}
+.arrows-faq section .box-title-faq:before{position:absolute;display:block;content:'\203a';font-size:18pt;left:20px;top:-2px;transition:transform .15s ease-in-out;color:rgba(0,0,0,0.54)}
+input:checked+section.box-faq .box-title-faq:before{transform:rotate(90deg)}
+@media screen and (min-width:768px) and (max-width:979px){
+	.arrows-faq section .box-title-faq{padding-left:44px;width:calc(80%)}
+	.box-title-faq{line-height:26px;height:100%}
+	.box-faq{height:100%}
+	header .box-title-faq{padding-top:10px;padding-bottom:10px}
+}
+@media screen and (min-width:50px) and (max-width:633px){
+	.arrows-faq section .box-title-faq{padding-left:44px;width:calc(80%)}
+	.box-title-faq{line-height:26px;height:100%}
+	.box-faq{height:100%}
+	header .box-title-faq{padding-top:10px;padding-bottom:10px}
+}
+/* Dopasowanie do WordPressa (motyw nadaje nagłówkom własne marginesy i czcionkę). */
+.accordion-faq h3, .accordion-faq h4{margin:0;font-size:inherit;line-height:inherit}
+.accordion-faq h4 .box-title-faq{font-size:1rem;font-weight:600}

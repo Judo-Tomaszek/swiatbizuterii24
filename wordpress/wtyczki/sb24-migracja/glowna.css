@@ -1,0 +1,54 @@
+/* Strona główna 1:1 z układem Shopera — niezależnie od motywu (sekcje na pełną szerokość wychodzą
+   z kontenera motywu przez 100vw). Treść: skrypty/import/importuj-tresci.php glowna. */
+.sb24-hero, .sb24-kafle, .sb24-banery, .sb24-mapa {
+	width: 100vw; max-width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+}
+body.home { overflow-x: clip; } /* 100vw liczy też pasek przewijania */
+.sb24-hero img { display: block; width: 100%; height: auto; }
+
+.sb24-zalety.sb24-zalety { /* podwójna klasa: motywy nadpisują marginesy list w treści */
+	display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem;
+	max-width: 1180px; margin: 0 auto; padding: 1.75rem 16px; list-style: none;
+}
+.sb24-zalety li { display: flex; align-items: center; gap: .75rem; margin: 0; }
+.sb24-zalety img { width: 35px; height: auto; flex: none; }
+.sb24-zalety p { margin: 0; font-size: 13px; color: #424242; }
+
+.sb24-kontener { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+.sb24-polecane .sb24-h1 {
+	margin: 1.5rem 0 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #ececec;
+	text-align: center; font-size: 22px; font-weight: 700; font-family: inherit; letter-spacing: 0;
+}
+
+.sb24-kafle { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem; margin-bottom: 1.25rem; }
+.sb24-kafle a { position: relative; display: block; overflow: hidden; }
+.sb24-kafle img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; transition: transform .4s; }
+.sb24-kafle a:hover img { transform: scale(1.04); }
+.sb24-kafle span {
+	position: absolute; left: 0; right: 0; bottom: 1.5rem; padding: 15px;
+	background: rgba(40, 40, 40, .76); color: #c8bd81; font-size: 13px; text-decoration: none;
+}
+
+.sb24-banery { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.sb24-banery img { display: block; width: 100%; height: auto; }
+
+.sb24-mapa { margin-top: 1.25rem; line-height: 0; }
+.sb24-mapa iframe { width: 100%; height: 600px; border: 0; filter: grayscale(1); }
+
+@media (max-width: 900px) {
+	.sb24-kafle { grid-template-columns: repeat(2, 1fr); }
+	.sb24-zalety { justify-content: center; }
+}
+@media (max-width: 600px) {
+	.sb24-banery { grid-template-columns: 1fr; }
+	.sb24-mapa iframe { height: 380px; }
+}
+
+/* Blok tekstu ze zdjęciem (box_custom46): tekst opływa zdjęcie zamiast stać w drugiej kolumnie */
+.sb24-blok .f-row.f-row { display: block; }
+.sb24-blok .f-row.f-row > .f-grid-6:first-child { float: left; width: 42%; margin: .4rem 2.5rem 1.5rem 0; }
+.sb24-blok .f-row.f-row > .f-grid-6 + .f-grid-6 { float: none; width: auto; margin-left: 0; }
+.sb24-blok .f-row.f-row > .f-grid-6 + .f-grid-6 > h2:first-child { margin-top: 0; }
+@media (max-width: 767px) {
+	.sb24-blok .f-row.f-row > .f-grid-6:first-child { float: none; width: 100% !important; margin: 0 0 1.5rem; }
+}

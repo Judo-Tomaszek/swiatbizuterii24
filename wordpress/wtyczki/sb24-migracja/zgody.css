@@ -1,0 +1,29 @@
+/* Okno zgód na cookies — barwy marki (złoty #c9bd80, ciemny #111). */
+.sb24-zgody {
+	position: fixed; z-index: 100000; left: 16px; right: 16px; bottom: 16px; max-width: 640px; margin: 0 auto;
+	max-height: calc(100vh - 32px); overflow-y: auto;
+	background: #fff; color: #222; border-top: 4px solid #c9bd80; border-radius: 8px;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, .25); padding: 1.4rem 1.6rem; font-size: .92rem; line-height: 1.5;
+	display: none;
+}
+.sb24-zgody--widoczne { display: block; }
+.sb24-zgody__tytul { font-size: 1.15rem; font-weight: 700; margin: 0 0 .5rem; color: #111; }
+.sb24-zgody p { margin: 0 0 .8rem; }
+.sb24-zgody a { color: #8b7b3f; text-decoration: underline; }
+.sb24-zgody__przyciski { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; justify-content: flex-end; margin-top: 1rem; }
+.sb24-zgody__btn {
+	background: #111; color: #fff; border: 1px solid #111; border-radius: 4px; padding: .65rem 1.1rem; font-weight: 600; cursor: pointer; font-size: .9rem;
+}
+.sb24-zgody__btn:hover { background: #c9bd80; border-color: #c9bd80; color: #111; }
+.sb24-zgody__btn--jasny { background: #fff; color: #111; }
+.sb24-zgody__link { background: none; border: 0; color: #111; text-decoration: underline; cursor: pointer; padding: .65rem .4rem; font-size: .9rem; margin-right: auto; }
+.sb24-zgody__kat { display: flex; gap: .75rem; align-items: flex-start; padding: .7rem 0; border-top: 1px solid #eee; cursor: pointer; }
+.sb24-zgody__kat input { margin-top: .3rem; accent-color: #c9bd80; width: 18px; height: 18px; flex: none; }
+.sb24-zgody__kat strong { display: block; color: #111; }
+.sb24-zgody__kat small { display: block; color: #555; font-size: .85rem; }
+@media (max-width: 600px) {
+	.sb24-zgody { left: 8px; right: 8px; bottom: 8px; padding: 1.1rem; }
+	.sb24-zgody__przyciski { justify-content: stretch; }
+	.sb24-zgody__btn { flex: 1 1 100%; }
+	.sb24-zgody__link { margin-right: 0; }
+}

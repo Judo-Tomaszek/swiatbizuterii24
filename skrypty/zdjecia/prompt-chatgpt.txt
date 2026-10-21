@@ -1,0 +1,9 @@
+You are restoring an e-commerce product photo of real jewelry from a jewelry store. The attached image is a small (ROZMIAR px), heavily JPEG-compressed photo. Use image generation to produce a high-quality, sharp version of THE SAME PHOTO at 1024x1024 px.
+STRICT RULES - the photo must still show exactly this physical product:
+- Do NOT change the design: same shape, proportions, number and placement of stones, prongs, links, engravings, clasp, metal color (yellow/white/rose gold or silver), stone colors.
+- Do NOT add or remove any element, new reflections, text or watermarks.
+- Do NOT invent surface texture or material: smooth leather, smooth metal or plain stones must stay smooth and plain (no braiding, weaving, dots, hammering or patterns that are not clearly visible in the original). Keep the same stitching, edges and number of strands.
+- Keep the exact colors and saturation of stones, enamel and leather - do not make them more vivid.
+- Keep the same camera angle, framing, composition and the plain white background.
+- Only remove compression artifacts and blur, and recover crisp edges and metal/stone texture.
+Save the resulting image in the current working directory as NAZWA.png and reply with just the file name.
