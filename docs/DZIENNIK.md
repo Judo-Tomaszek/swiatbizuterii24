@@ -634,3 +634,67 @@ Powiązania: [[wyglad-motyw]],
 
 Powiązania: [[konfiguracja-sklepu]],
 [[DZIENNIK#§8 — 2026-10-19 — Yoast SEO 1:1, konta klientów z Shopera, rejestracja|§8]].
+
+## §11 — 2026-10-21 — Zdjęcia WebP w sklepie, wygląd, zakupy wyłączone, kontakt, poczta, bezpieczeństwo, cache, Duplicator, GitHub
+
+### Zrobione
+
+- **Zdjęcia w sklepie:** `do-webp.py` bierze wersję z ChatGPT, a gdy jej nie ma — z ESRGAN (zmniejszoną
+  do 1024 px); `produkty/_zrodla.json` mówi, skąd jest każdy plik. Import podmienił 3285 zdjęć — wszystkie
+  4222 to WebP (1331 ChatGPT, 2891 ESRGAN). Wagi: miniatura listy ~6–7 KB, zdjęcie produktu 600 px ~16–19 KB,
+  pełne 1024 px 30–45 KB. Podmiana na ChatGPT później: `do-webp.py` + `importuj-tresci.php zdjecia`
+  (po md5, ten sam załącznik). Pillow doinstalowany (zniknął po aktualizacji Pythona).
+- **Kategorie i menu:** 3 produkty w rzędzie, 15 na stronę; kafelek bez przycisku — cały prowadzi do
+  produktu, przy najechaniu powiększa się zdjęcie. Menu: większe, ciemne napisy, złota kreska, jasne
+  podmenu (długie w 2 kolumnach). Wyszukiwarka w nagłówku jako pole (szuka produktów) zamiast nakładki.
+  Baner na wynikach wyszukiwania i `/sklep`.
+- **Paginacja:** linki na `/kategoria/3` doklejały numer (`/3/page/6/`) — `sb24_paginacja_shopera`
+  odcina numer strony Shopera; link „1” → adres kategorii, `/zloto/1` → 301. Sprawdzone automatycznie
+  na 25 kategoriach, blogu, wyszukiwarce i filtrach. Opisy kategorii (górny i dolny) tylko na stronie 1 —
+  jak w Shoperze.
+- **Zakupy online wyłączone** (decyzja właściciela, na razie): zamiast koszyka zaproszenie do salonu
+  z telefonami i „Zapytaj o ten produkt”; bez koszyka w nagłówku; koszyk i kasa → salon. Włączenie:
+  `wp option update sb24_zakupy_online tak`.
+- **Nowe adresy** (`SB24_NOWE_ADRESY`): `/salon-firmowy`, `/indywidualne-projekty`, `/kontakt` — stare
+  `/pl/i/…`, `/pl/c/…` (z paginacją) dają 301. Strony Salon i Kontakt przerobione (karty, mapa, godziny;
+  treść w `tresci-poprawione/`). Numer stacjonarny wszędzie przy telefonach; poprawione godziny w pasku bloga.
+- **Jeden H1:** filtr treści usuwa H1 równy tytułowi, inne zamienia na H2 (pomija stronę główną).
+  „Naprawa biżuterii” dostała tytuł „Naprawa biżuterii Opole” = H1 z Shopera. 1677 stron: wszędzie 1 H1.
+- **Formularz kontaktowy** `[sb24_formularz]` (Kontakt, Salon): pułapka + min. 3 s + 5/h z IP, zgoda RODO,
+  e-mail HTML w szablonie maili WooCommerce (logo, kolory marki — też dla maili do klientów).
+- **Poczta:** nadawca `info@` sklepu, formularz i powiadomienia o zamówieniach → skrzynka sklepu +
+  właściciel; SMTP cal.pl z `.env` (`SB24_SMTP_*` przez docker-compose → `phpmailer_init`); lokalnie
+  `SB24_MAILPIT` kieruje wszystko do Mailpita (podgląd http://localhost:8026).
+- **Logowanie:** własny limit prób (`bezpieczenstwo.php`) + historia z odblokowaniem w Narzędzia →
+  Próby logowania (30 dni); XML-RPC off, `/?author=N` i REST `users` → 404. Panel ukryty wtyczką
+  WPS Hide Login (adres tylko w bazie i `.env`).
+- **Zadania w tle:** 1927 zaległych akcji (m.in. tabela atrybutów do filtrów) — WordPress w kontenerze
+  nie mógł połączyć się sam ze sobą pod `localhost:8080`. Apache słucha też na 8080 (docker-compose).
+- **WP Fastest Cache** (`ustaw-cache.php`) + **paczka Duplicatora** (518 MB, `dane/paczka/`): bez konta
+  testowego, bez Astry/Blocksy, sklep otwarty. Lista kroków po wgraniu: [[konfiguracja-sklepu]] §5.
+- **GitHub:** repozytorium założone i wypchnięte (`Judo-Tomaszek/swiatbizuterii24`), `.gitattributes` z LF.
+
+### Decyzje / pułapki
+
+- **Permalinki `/blog/%postname%` bez ukośnika.** WP Fastest Cache nie zapisuje stron, których adres
+  nie kończy się ukośnikiem, gdy struktura WP kończy się ukośnikiem — czyli żadnej strony z adresem
+  Shopera. Po zmianie: 1807 adresów z mapy Shopera bez zmian (porównanie przed/po), zmieniły się tylko
+  `/moje-konto`, `/sklep`, `/koszyk` (wersje z `/` → 301). Przy okazji znika źródło pułapki Yoasta z §8.
+- **Norton Antivirus przechwytuje TLS** (SMTP i HTTPS): lokalnie wtyczka nie weryfikuje certyfikatu
+  SMTP (tylko `local`), a Git w repo używa `http.sslBackend schannel`.
+- **WP-CLI ma osobny kontener** — bez `WORDPRESS_CONFIG_EXTRA` widział środowisko „production”; dodane.
+- Komunikat Action Scheduler z `%1$d` i linkiem `%2$s` to błąd WooCommerce 11.2.1 (brak `sprintf`), nie
+  tłumaczenia.
+- Test formularza curlem na Windowsie wysyła polskie znaki w CP1250 — fałszywy błąd; przeglądarka wysyła UTF-8.
+- Limit logowania tylko po IP, nie po loginie — inaczej obcy mógłby zablokować właściciela.
+- Zdjęcia z ChatGPT dalej robione lokalnie — po przeniesieniu sklepu podmiany trzeba robić też na serwerze.
+
+### W toku
+
+1. ChatGPT `--reszta`: 1617 plików; skrypt kilka razy wyłączany przez Claude Code przy braku pamięci
+   (główne „zjadacze”: Firefox, emulator Androida z innego projektu, usługa DTS — wyłączona).
+2. Na serwerze: kroki z [[konfiguracja-sklepu]] §5 (SMTP w wp-config, WP Fastest Cache zapisać ponownie,
+   adres panelu, usunąć instalator). Od właściciela: płatności, regulamin, faktury.
+
+Powiązania: [[konfiguracja-sklepu]], [[adresy-url-wtyczka]],
+[[DZIENNIK#§10 — 2026-10-20 — Dostawy i adres sklepu 1:1 z Shopera|§10]].

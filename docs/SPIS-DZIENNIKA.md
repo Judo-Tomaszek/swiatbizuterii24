@@ -3,10 +3,10 @@ aliases: [Spis dziennika, Indeks dziennika]
 tags: [dziennik, indeks, moc]
 ---
 
-# 🗂️ Spis dziennika (§1–§10)
+# 🗂️ Spis dziennika (§1–§11)
 
 Klikalny indeks wszystkich wpisów [[DZIENNIK]] — kroniki prac nad **swiatbizuterii24**.
-Każdy link prowadzi do konkretnej sekcji dziennika. Wpisów: **10**, dni pracy: **4**.
+Każdy link prowadzi do konkretnej sekcji dziennika. Wpisów: **11**, dni pracy: **5**.
 
 > [!tip] Nawigacja
 > • Pulpit dokumentacji: [[HOME]] • Zasady dopisywania: [[KONWENCJA-DOKUMENTACJI]]
@@ -34,6 +34,10 @@ Każdy link prowadzi do konkretnej sekcji dziennika. Wpisów: **10**, dni pracy:
 ## 20 października 2026
 
 - [[DZIENNIK#§10 — 2026-10-20 — Dostawy i adres sklepu 1:1 z Shopera|10 — Dostawy i adres sklepu 1:1 z Shopera]]
+
+## 21 października 2026
+
+- [[DZIENNIK#§11 — 2026-10-21 — Zdjęcia WebP w sklepie, wygląd, zakupy wyłączone, kontakt, poczta, bezpieczeństwo, cache, Duplicator, GitHub|11 — Zdjęcia WebP w sklepie, wygląd, zakupy wyłączone, kontakt, poczta, bezpieczeństwo, cache…]]
 
 ---
 *Ten spis jest generowany z nagłówków `## §…` w [[DZIENNIK]]. Po dodaniu nowego wpisu odśwież go skryptem `docs/_narzedzia/gen-spis.mjs` (patrz [[KONWENCJA-DOKUMENTACJI]]).*
