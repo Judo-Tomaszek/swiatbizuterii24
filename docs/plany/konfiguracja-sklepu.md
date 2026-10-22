@@ -79,6 +79,13 @@ bez Astry/Blocksy, bez `wp-content/cache`. Na serwerze, po instalatorze:
 
 ## Zrobione
 
+- 2026-10-22 — **sklep na produkcji** (cal.pl, https://swiatbizuterii24.pl, bez subdomeny) z paczki Duplicatora.
+  Zastane na serwerze: instalator usunięty, stałe `SB24_SMTP_*` w `wp-config.php`, panel pod ukrytym adresem,
+  permalinki `/blog/%postname%`. Zmiany wdrażane przez SSH: `skrypty/serwer.sh` (tylko katalog sklepu —
+  na koncie są inne strony), kopia przed zmianą w `~/domains/swiatbizuterii24.pl/kopie/`.
+- 2026-10-22 — **strony informacyjne** (formy płatności, czas i koszty dostawy, jak dostarczymy, dlaczego my):
+  nowe adresy + wygląd jak Salon, dane z ustawień sklepu (`skrypty/import/strony-informacyjne.php`).
+
 - 2026-10-21 — **WP Fastest Cache** (`skrypty/import/ustaw-cache.php`): cache dla niezalogowanych, preload,
   minifikacja HTML/CSS, łączenie CSS, gzip, cache przeglądarki; bez łączenia JS. Permalinki zmienione na
   `/blog/%postname%` (bez ukośnika) — sprawdzone: 1807 adresów z mapy Shopera bez zmian.

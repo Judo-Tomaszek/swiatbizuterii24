@@ -37,6 +37,10 @@ const SB24_NOWE_ADRESY = [
 	'/pl/i/Salon-firmowy/15'          => '/salon-firmowy',
 	'/pl/c/Indywidualne-projekty/158' => '/indywidualne-projekty',
 	'/pl/i/Kontakt-i-dane-firmy/9'    => '/kontakt',
+	'/pl/i/Formy-platnosci/10'        => '/formy-platnosci',
+	'/pl/i/Czas-i-koszty-dostawy/4'   => '/czas-i-koszty-dostawy',
+	'/pl/i/Jak-i-kiedy-dostarczymy-Twoja-przesylke/5' => '/jak-i-kiedy-dostarczymy-twoja-przesylke',
+	'/pl/i/Dlaczego-my/6'             => '/dlaczego-my',
 ];
 
 function sb24_tabela() {
@@ -767,9 +771,23 @@ add_action( 'woocommerce_single_product_summary', function () {
 }, 31 );
 
 add_action( 'wp_enqueue_scripts', function () {
-	if ( ( sb24_zakupy_wylaczone() && is_product() ) || is_page( [ 'salon-firmowy', 'kontakt-i-dane-firmy' ] ) ) {
+	if ( ( sb24_zakupy_wylaczone() && is_product() ) || is_page( SB24_STRONY_SALONU ) ) {
 		wp_enqueue_style( 'sb24-salon', plugins_url( 'salon.css', __FILE__ ), [], filemtime( __DIR__ . '/salon.css' ) );
 	}
+} );
+
+/** Strony z treścią w skrypty/import/tresci-poprawione/ (klasy sb24-salon-*) — ładują salon.css. */
+const SB24_STRONY_SALONU = [ 'salon-firmowy', 'kontakt-i-dane-firmy', 'formy-platnosci', 'czas-i-koszty-dostawy', 'jak-i-kiedy-dostarczymy-twoja-przesylke', 'dlaczego-my' ];
+
+/** [sb24_zakupy_info] — na stronach płatności i dostawy: dopóki zakupy online są wyłączone, mówi, jak kupić. */
+add_shortcode( 'sb24_zakupy_info', function () {
+	if ( ! sb24_zakupy_wylaczone() ) {
+		return '';
+	}
+	$tel = fn( $nr ) => '<a href="tel:' . esc_attr( preg_replace( '/[^+\d]/', '', $nr ) ) . '">' . esc_html( $nr ) . '</a>';
+	return '<div class="sb24-salon-uwaga"><strong>Teraz zamówienia przyjmujemy w salonie i telefonicznie.</strong> '
+		. 'Zadzwoń: ' . $tel( SB24_TELEFON ) . ' lub ' . $tel( SB24_TELEFON_STACJONARNY ) . ' — sprawdzimy dostępność, '
+		. 'odłożymy biżuterię dla Ciebie albo wyślemy ją kurierem. Zasady płatności i dostawy poniżej obowiązują także wtedy.</div>';
 } );
 
 // Kadence: bez koszyka w nagłówku (komputer i telefon).

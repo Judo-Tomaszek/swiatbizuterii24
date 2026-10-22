@@ -76,3 +76,36 @@ a.sb24-salon-usluga:hover { transform: translateY(-3px); box-shadow: 0 10px 30px
 	.sb24-formularz-pola { grid-template-columns: 1fr; }
 	.sb24-salon-napisz { padding: 1.6rem 1.2rem; }
 }
+
+/* Strony „Formy płatności”, „Czas i koszty dostawy”, „Jak i kiedy dostarczymy…”, „Dlaczego my?” — te same klasy co salon */
+.sb24-salon-karta h2 { margin-top: 0; }
+.sb24-salon-ikona { display: block; width: 44px; height: 44px; margin: 0 auto 1rem; color: #8b7b3f; }
+.sb24-salon-karty.sb24-salon-karty-2 { grid-template-columns: repeat(2, 1fr); }
+.sb24-salon-karty.sb24-salon-karty-4 { grid-template-columns: repeat(4, 1fr); }
+.sb24-salon-karta.sb24-salon-karta-lewo { text-align: left; }
+.sb24-salon-karta.sb24-salon-karta-lewo .sb24-salon-ikona { margin-left: 0; }
+.sb24-salon-karta .sb24-salon-cena { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 2rem; font-weight: 600; color: #8b7b3f; line-height: 1.2; margin: 0 0 .4rem; }
+.sb24-salon-karta .sb24-salon-podpis { font-size: .9rem; color: #666; line-height: 1.6; }
+.sb24-salon-uwaga { max-width: 760px; margin: 0 auto 3rem; padding: 1.1rem 1.4rem; background: #fcfbf7; border: 1px solid #e8e1c8; border-left: 3px solid #c9bd80; border-radius: 3px; line-height: 1.7; }
+.sb24-salon-uwaga a { color: #8b7b3f; font-weight: 600; white-space: nowrap; }
+.sb24-salon-tekst { max-width: 760px; margin-left: auto !important; margin-right: auto !important; line-height: 1.8; }
+.sb24-salon-tekst h2 { text-align: center; }
+.sb24-salon-tekst a { color: #8b7b3f; }
+.sb24-salon-cennik { width: 100%; border-collapse: collapse; margin: 0 0 1rem; font-size: 1rem; }
+.sb24-salon-cennik th, .sb24-salon-cennik td { padding: .8rem 1rem; border: 0; border-bottom: 1px solid #e8e1c8; text-align: left; background: none; }
+.sb24-salon-cennik th { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: #8b7b3f; font-weight: 600; }
+.sb24-salon-cennik td + td { text-align: right; font-weight: 600; white-space: nowrap; }
+.sb24-salon-cennik th + th { text-align: right; }
+.sb24-salon-kroki { list-style: none; counter-reset: krok; max-width: 760px; margin: 0 auto !important; padding: 0; }
+.sb24-salon-kroki li { counter-increment: krok; position: relative; padding: 0 0 1.8rem 4.2rem; line-height: 1.8; }
+.sb24-salon-kroki li::before { content: counter(krok); position: absolute; left: 0; top: 0; width: 2.8rem; height: 2.8rem; border-radius: 50%; background: #111; color: #c9bd80; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.4rem; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+.sb24-salon-kroki li:not(:last-child)::after { content: ''; position: absolute; left: 1.4rem; top: 3rem; bottom: .3rem; border-left: 1px dashed #c9bd80; }
+.sb24-salon-kroki strong { display: block; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.35rem; color: #111; }
+.sb24-salon-konto { font-size: 1.15rem; letter-spacing: .04em; white-space: nowrap; }
+@media (max-width: 860px) {
+	.sb24-salon-karty.sb24-salon-karty-2, .sb24-salon-karty.sb24-salon-karty-4 { grid-template-columns: 1fr; }
+	.sb24-salon-konto { white-space: normal; }
+}
+@media (min-width: 861px) and (max-width: 1100px) {
+	.sb24-salon-karty.sb24-salon-karty-4 { grid-template-columns: repeat(2, 1fr); }
+}

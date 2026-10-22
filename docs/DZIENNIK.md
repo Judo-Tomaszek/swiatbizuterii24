@@ -698,3 +698,49 @@ Powiązania: [[konfiguracja-sklepu]],
 
 Powiązania: [[konfiguracja-sklepu]], [[adresy-url-wtyczka]],
 [[DZIENNIK#§10 — 2026-10-20 — Dostawy i adres sklepu 1:1 z Shopera|§10]].
+
+## §12 — 2026-10-22 — Sklep na produkcji, strony informacyjne z nowymi adresami, wdrożenia przez SSH
+
+### Co zrobione
+
+- **Sklep na produkcji:** właściciel zainstalował paczkę Duplicatora na hostingu cal.pl, od razu pod
+  `https://swiatbizuterii24.pl` (bez subdomeny testowej). Ostrzeżenie instalatora: MariaDB serwera 10.6,
+  lokalnie 11.4 — instalacja przeszła bez błędów, strony działają.
+- **Strony informacyjne** — nowy wygląd (karty z ikonami SVG, cennik, oś „krok po kroku”, klasy `sb24-salon-*`
+  w `salon.css`) i zwykłe adresy (`SB24_NOWE_ADRESY`, stare → 301):
+  `/formy-platnosci`, `/czas-i-koszty-dostawy`, `/jak-i-kiedy-dostarczymy-twoja-przesylke`, `/dlaczego-my`.
+  Treść: `skrypty/import/tresci-poprawione/<slug>.html`, wgrywa `skrypty/import/strony-informacyjne.php`
+  (treść, linki w stopce i menu, tabela adresów, Yoast, cache — idempotentny, lokalnie i na serwerze).
+- Treść poprawiona względem Shopera: „Czas i koszty dostawy” był **niezmienionym szablonem Shopera**
+  (przykładowy cennik Mini/Midi/Maxi, logo InPost, link do panelu Shopera) → realne stawki: DHL 21,50 zł,
+  od 70 zł 0 zł, pobranie +20 zł, odbiór w salonie 0 zł. W „Formach płatności” opis PayU mówił o PayPalu;
+  w tytule przelewu „numer zamówienia” zamiast „kod produktu”.
+- Shortcode **`[sb24_zakupy_info]`**: na stronach płatności i dostawy ramka „zamówienia w salonie i
+  telefonicznie” — znika sama po włączeniu zakupów online (`sb24_zakupy_online`).
+- **Wdrożenia przez SSH:** `skrypty/serwer.sh '<polecenie>'` (plink, dane z `.env`). Konto hostingu ma
+  ~20 innych stron — skrypt wchodzi tylko do `~/domains/swiatbizuterii24.pl/public_html` i przerywa, gdy
+  `home` ≠ swiatbizuterii24.pl. Przed zmianą kopia do `~/domains/swiatbizuterii24.pl/kopie/<data>-<temat>/`
+  (pliki + `wp db export`), pliki przez pscp do `../wdrozenie/`, `php -l`, kopiowanie, skrypt, czyszczenie cache.
+- Skrypt zdjęć ChatGPT: padał na `EBUSY` przy usuwaniu katalogu roboczego (antywirus/indeksowanie trzyma
+  plik) — teraz ponawia i w ostateczności zostawia katalog (`popraw-chatgpt.mjs`).
+
+### Decyzje / pułapki
+
+- **Yoast trzyma adres strony we własnej tabeli** (`wp_yoast_indexable.permalink`). Po zmianie adresu przez
+  `SB24_NOWE_ADRESY` canonical, og:url i sitemap zostały przy starym adresie Shopera (który robi 301 na nowy —
+  sprzeczny sygnał dla Google). Lokalnie się nie ujawniło; na serwerze poprawione ręcznie, a skrypt robi to sam.
+- Pliki wtyczki na serwerze różniły się od repo tylko CRLF (paczka z kopii roboczej Windows) — porównywać
+  z `diff --strip-trailing-cr`.
+- Pułapka testów: w Git Bash `\n` w `curl -w` z `MSYS`-em daje „/n” — wyglądało jak 301 na adres z ukośnikiem.
+  Nagłówek `Location` był poprawny.
+- Opis PayU (BLIK, karta) i dopłata za pobranie są z Shopera; w WooCommerce te płatności jeszcze nie są
+  ustawione (czekają na właściciela, [[konfiguracja-sklepu]] pkt 2–4).
+
+### W toku
+
+1. ChatGPT `--reszta`: 1870 plików, ~2360 do zrobienia; Claude Code dalej wyłącza go przy braku pamięci
+   (emulator Androida, Chrome, stare sesje Claude, MySQL z XAMPP). Podmiany zdjęć — teraz też na serwerze.
+2. Od właściciela: płatności (PayU, przelew, pobranie), regulamin, faktury.
+
+Powiązania: [[konfiguracja-sklepu]], [[adresy-url-wtyczka]],
+[[DZIENNIK#§11 — 2026-10-21 — Zdjęcia WebP w sklepie, wygląd, zakupy wyłączone, kontakt, poczta, bezpieczeństwo, cache, Duplicator, GitHub|§11]].

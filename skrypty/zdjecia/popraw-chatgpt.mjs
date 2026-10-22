@@ -55,6 +55,11 @@ function czekajNaLimit(tekst) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 }
 
+// katalog roboczy bywa chwilowo zablokowany (antywirus, indeksowanie) — wtedy ponawiamy, a w ostateczności zostawiamy go
+function usunKatalog(kat) {
+  try { rmSync(kat, { recursive: true, force: true, maxRetries: 10, retryDelay: 500 }); } catch (e) { console.log(`nie usunięto ${kat}: ${e.code}`); }
+}
+
 let zrobione = 0, kolejneBledy = 0, serie = 0;
 for (let i = 0; i < lista.length && zrobione < limit; i++) {
   const { nazwa, plik, px } = lista[i];
@@ -62,7 +67,7 @@ for (let i = 0; i < lista.length && zrobione < limit; i++) {
   if (existsSync(cel)) continue;
 
   const kat = join(ROBOCZY, nazwa);
-  rmSync(kat, { recursive: true, force: true });
+  usunKatalog(kat);
   mkdirSync(kat, { recursive: true });
   const wej = join(kat, 'oryginal' + plik.slice(plik.lastIndexOf('.')));
   copyFileSync(plik, wej);
@@ -82,7 +87,7 @@ for (let i = 0; i < lista.length && zrobione < limit; i++) {
   const s = Math.round((Date.now() - start) / 1000);
   appendFileSync(LOG, JSON.stringify({ nazwa, px, ok: !blad, s, blad, czas: new Date().toISOString() }) + '\n');
   console.log(`${new Date().toLocaleTimeString('pl')} ${nazwa} (${px}px) ${blad ? 'BŁĄD ' + blad.trim().split('\n').pop() : 'ok'} ${s}s`);
-  if (!blad) { kolejneBledy = 0; serie = 0; zrobione++; rmSync(kat, { recursive: true, force: true }); continue; }
+  if (!blad) { kolejneBledy = 0; serie = 0; zrobione++; usunKatalog(kat); continue; }
   if (/usage.limit|limit[a-zęó ]*(użycia|wyczerpany|przekroczenia)/i.test(blad)) { czekajNaLimit(blad); kolejneBledy = 0; i--; continue; }
   // seria błędów bez komunikatu o limicie zwykle też jest limitem obrazków — czekamy 30 min, po 4 seriach kończymy
   if (++kolejneBledy >= 3) {

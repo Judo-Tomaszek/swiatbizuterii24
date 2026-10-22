@@ -60,8 +60,13 @@ Decyzja właściciela (2026-10-21): te obiekty dostają zwykłe adresy zamiast `
 | `/pl/i/Salon-firmowy/15` | `/salon-firmowy` | 301 |
 | `/pl/c/Indywidualne-projekty/158` (+ `/2`, `/3`…) | `/indywidualne-projekty` (+ `/2`…) | 301 |
 | `/pl/i/Kontakt-i-dane-firmy/9` | `/kontakt` | 301 |
+| `/pl/i/Formy-platnosci/10` | `/formy-platnosci` | 301 (2026-10-22) |
+| `/pl/i/Czas-i-koszty-dostawy/4` | `/czas-i-koszty-dostawy` | 301 (2026-10-22) |
+| `/pl/i/Jak-i-kiedy-dostarczymy-Twoja-przesylke/5` | `/jak-i-kiedy-dostarczymy-twoja-przesylke` | 301 (2026-10-22) |
+| `/pl/i/Dlaczego-my/6` | `/dlaczego-my` | 301 (2026-10-22) |
 
-Kolejne takie zmiany: dopisać parę do `SB24_NOWE_ADRESY` i `wp sb24 przebuduj`. Nie dla stron z 1. miejsc w Google.
+Kolejne takie zmiany: dopisać parę do `SB24_NOWE_ADRESY` i `wp sb24 przebuduj`, a w Yoaście odświeżyć `permalink`
+w `wp_yoast_indexable` (inaczej canonical i sitemap zostają przy starym adresie — robi to `strony-informacyjne.php`). Nie dla stron z 1. miejsc w Google.
 
 ## Test
 

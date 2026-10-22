@@ -125,8 +125,8 @@ function sb24w_stopka() {
 	$konto = get_permalink( wc_get_page_id( 'myaccount' ) );
 	return [
 		$lista( 'Informacje', [ 'Blog' => '/pl/blog', 'Regulamin' => '/pl/i/Regulamin/3', 'Polityka prywatności' => '/pl/i/Polityka-prywatnosci/11', 'Chcesz oddać zakupiony towar?' => '/pl/i/Chcesz-oddac-zakupiony-towar/2' ] ),
-		$lista( 'Zakupy', [ 'Formy płatności' => '/pl/i/Formy-platnosci/10', 'Czas i koszty dostawy' => '/pl/i/Czas-i-koszty-dostawy/4', 'Jak i kiedy dostarczymy Twoją przesyłkę?' => '/pl/i/Jak-i-kiedy-dostarczymy-Twoja-przesylke/5', 'Moje konto' => wp_make_link_relative( $konto ) ] ),
-		$lista( 'Usługi i salon', [ 'Naprawa biżuterii' => '/naprawa-bizuterii-opole', 'Skup złota Opole' => '/skup-zlota-opole', 'Projekty indywidualne' => '/pl/i/Projekty-indywidualne/13', 'Dlaczego my?' => '/pl/i/Dlaczego-my/6', 'Kontakt i dane firmy' => '/kontakt' ] ),
+		$lista( 'Zakupy', [ 'Formy płatności' => '/formy-platnosci', 'Czas i koszty dostawy' => '/czas-i-koszty-dostawy', 'Jak i kiedy dostarczymy Twoją przesyłkę?' => '/jak-i-kiedy-dostarczymy-twoja-przesylke', 'Moje konto' => wp_make_link_relative( $konto ) ] ),
+		$lista( 'Usługi i salon', [ 'Naprawa biżuterii' => '/naprawa-bizuterii-opole', 'Skup złota Opole' => '/skup-zlota-opole', 'Projekty indywidualne' => '/pl/i/Projekty-indywidualne/13', 'Dlaczego my?' => '/dlaczego-my', 'Kontakt i dane firmy' => '/kontakt' ] ),
 		'<!-- wp:heading {"level":4} --><h4 class="wp-block-heading">Salon w Opolu</h4><!-- /wp:heading -->'
 		. '<!-- wp:paragraph --><p>Potrzebujesz pomocy? Zadzwoń!<br><strong><a href="tel:+48535263900">' . SB24_KONTAKT['telefon'] . '</a><br><a href="tel:+48774581046">' . SB24_KONTAKT['telefon_stacjonarny'] . '</a></strong></p><!-- /wp:paragraph -->'
 		. '<!-- wp:paragraph --><p>' . SB24_KONTAKT['adres'] . '</p><!-- /wp:paragraph -->'
