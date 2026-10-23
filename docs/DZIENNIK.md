@@ -744,3 +744,40 @@ Powiązania: [[konfiguracja-sklepu]], [[adresy-url-wtyczka]],
 
 Powiązania: [[konfiguracja-sklepu]], [[adresy-url-wtyczka]],
 [[DZIENNIK#§11 — 2026-10-21 — Zdjęcia WebP w sklepie, wygląd, zakupy wyłączone, kontakt, poczta, bezpieczeństwo, cache, Duplicator, GitHub|§11]].
+
+## §13 — 2026-10-23 — Dane strukturalne produktu: ostrzeżenie „brak validFrom” w Search Console
+
+### Co zrobione
+
+- Search Console: „Brakujące pole validFrom (w offers)” (niekrytyczne) — zgłoszone na 4 produktach, ale
+  dotyczyło **każdego produktu z ceną**. Źródło: WooCommerce 11.2 wpisuje do oferty `priceSpecification`
+  (`UnitPriceSpecification`) z `validThrough` = koniec przyszłego roku, bez `validFrom`.
+- Wtyczka `sb24-migracja`, nowa sekcja „dane strukturalne produktu”:
+  - filtr `woocommerce_structured_data_product_offer`: z `priceSpecification` zostaje tylko cena przed
+    promocją (wpis z `priceType`, przekreślona), bez dat; bez promocji blok znika. Przy `AggregateOffer`
+    znika cały (`lowPrice` już jest ceną promocyjną). Cena, waluta i `priceValidUntil` są w samej ofercie.
+  - filtr `woocommerce_structured_data_product`: **819 produktów z ceną ustalaną indywidualnie** (cena 0)
+    nie ma znacznika Product wcale — wcześniej miały ofertę „0.00 PLN”.
+- Wdrożone przez SSH (kopia: `~/domains/swiatbizuterii24.pl/kopie/2026-10-23-schema-validfrom/`), cache
+  wyczyszczony; curl (także z UA Googlebota): 4 strony + produkt z wariantami bez `validThrough`, obrączka
+  z ceną 0 bez znacznika Product, strony 200.
+
+### Decyzje / pułapki
+
+- **Usunięcie `priceSpecification` zamiast dopisania `validFrom`** — nie ma prawdziwej daty początku ceny
+  (data utworzenia produktu czy modyfikacji to nie to samo); oferta bez tego bloku jest pełna i poprawna.
+- **Produkt z ceną 0 bez znacznika, a nie bez oferty** — Product bez `offers`/`review`/`aggregateRating`
+  to błąd krytyczny; oferta 0 zł to nieprawda (Google mógłby pokazać obrączkę za 0 zł).
+- `set_data()` WooCommerce odrzuca tablicę bez `@type` — zwrócenie `[]` z filtra po prostu pomija znacznik.
+- Pierwsza „Sprawdź poprawkę” w GSC odrzuciła 3 z 4 stron (pierścionek ażurowy przeszedł), choć strony
+  serwują już poprawione znaczniki o identycznej strukturze — najpewniej Google oceniał starą kopię z indeksu.
+  Logi serwera (`../logs`) pakowane są w nocy, dzisiejszych wizyt Googlebota nie dało się sprawdzić.
+
+### W toku
+
+1. GSC: dla 3 adresów „Testuj wersję opublikowaną” → „Poproś o zindeksowanie”, po 2–3 dniach ponownie
+   „Sprawdź poprawkę”. Jeśli test pokaże inne pole niż `validFrom` — dokończyć.
+2. Bez zmian: ChatGPT `--reszta`, od właściciela płatności / regulamin / faktury (§12).
+
+Powiązania: [[adresy-url-wtyczka]],
+[[DZIENNIK#§12 — 2026-10-22 — Sklep na produkcji, strony informacyjne z nowymi adresami, wdrożenia przez SSH|§12]].

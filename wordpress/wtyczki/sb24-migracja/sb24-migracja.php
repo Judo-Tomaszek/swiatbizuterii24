@@ -445,6 +445,30 @@ add_filter( 'woocommerce_get_price_html', function ( $html, $produkt ) {
 }, 20, 2 );
 add_filter( 'woocommerce_is_purchasable', fn( $mozna, $produkt ) => sb24_cena_indywidualna( $produkt ) ? false : $mozna, 20, 2 );
 
+/* ------------------------------------------------------------ dane strukturalne produktu (Google) */
+
+/**
+ * Search Console: „Brakujące pole validFrom (w offers)”. WooCommerce wpisuje do każdej oferty
+ * `priceSpecification` z `validThrough` (koniec przyszłego roku) bez `validFrom`, a Google przy dacie
+ * końca oczekuje też daty początku. Cena i waluta są już w samej ofercie, termin ważności w
+ * `priceValidUntil` — więc z `priceSpecification` zostaje tylko cena przed promocją (`priceType`,
+ * przekreślona), bez dat. Przy AggregateOffer (warianty w różnych cenach) `lowPrice` już jest ceną
+ * promocyjną, więc `priceSpecification` znika całe.
+ */
+add_filter( 'woocommerce_structured_data_product_offer', function ( $oferta ) {
+	$ceny = 'Offer' === $oferta['@type'] ? array_filter( $oferta['priceSpecification'] ?? [], fn( $c ) => isset( $c['priceType'] ) ) : [];
+	foreach ( $ceny as &$cena ) {
+		unset( $cena['validFrom'], $cena['validThrough'] );
+	}
+	unset( $oferta['priceSpecification'] );
+	return $ceny ? $oferta + [ 'priceSpecification' => array_values( $ceny ) ] : $oferta;
+} );
+
+// Produkt z ceną ustalaną indywidualnie dostałby ofertę „0.00 PLN” — nieprawda, a Google mógłby pokazać
+// w wynikach obrączkę za 0 zł. Bez oferty znacznik Product jest nieprawidłowy (wymaga offers, review
+// albo aggregateRating), więc takie produkty nie mają go wcale.
+add_filter( 'woocommerce_structured_data_product', fn( $dane, $produkt ) => sb24_cena_indywidualna( $produkt ) ? [] : $dane, 20, 2 );
+
 /* ------------------------------------------------------------ zdjęcia produktów: ostrość */
 
 /**
