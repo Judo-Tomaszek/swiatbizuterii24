@@ -52,7 +52,9 @@ function czekajNaLimit(tekst) {
     ms = t - new Date();
   }
   console.log(`${new Date().toLocaleTimeString('pl')} limit ChatGPT — czekam do ${new Date(Date.now() + ms).toLocaleTimeString('pl')}`);
-  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+  // po minucie i według zegara ściennego — licznik Atomics.wait stoi, gdy komputer jest uśpiony
+  const koniec = Date.now() + ms;
+  while (Date.now() < koniec) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, Math.min(60_000, koniec - Date.now()));
 }
 
 // katalog roboczy bywa chwilowo zablokowany (antywirus, indeksowanie) — wtedy ponawiamy, a w ostateczności zostawiamy go

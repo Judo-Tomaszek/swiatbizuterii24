@@ -318,7 +318,8 @@ function sb24t_importuj_glowna() {
  * do sklepu idą WebP bez metadanych z dane/eksport/zdjecia-webp/, robi je skrypty/zdjecia/do-webp.py)
  * → biblioteka mediów + term meta _sb24_baner. Podmieniony plik = nowy załącznik.
  */
-const SB24_WEBP = '/import/dane/zdjecia-webp';
+// na serwerze produkcyjnym WebP-y leżą gdzie indziej: SB24_WEBP=../wdrozenie/zdjecia-webp wp eval-file …
+define( 'SB24_WEBP', getenv( 'SB24_WEBP' ) ?: '/import/dane/zdjecia-webp' );
 
 function sb24t_importuj_banery() {
 	$n = 0;

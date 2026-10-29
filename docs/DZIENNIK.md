@@ -781,3 +781,47 @@ Powiązania: [[konfiguracja-sklepu]], [[adresy-url-wtyczka]],
 
 Powiązania: [[adresy-url-wtyczka]],
 [[DZIENNIK#§12 — 2026-10-22 — Sklep na produkcji, strony informacyjne z nowymi adresami, wdrożenia przez SSH|§12]].
+
+## §14 — 2026-10-29 — Zdjęcia ChatGPT 4222 / 4222, podmiana w sklepie i na produkcji
+
+### Co zrobione
+
+- **ChatGPT `--reszta` skończony** (22–29.10): wszystkie 3286 pozostałe zdjęcia aktywnych produktów, razem z
+  głównymi 4223 PNG w `dane/poprawa-zdjec/chatgpt/`. Kolejność: najpierw na stanie, potem stan 0, od najmniejszych.
+- **WebP** (`do-webp.py`): 2884 nowe/odświeżone, wszystkie produkty ze źródła `chatgpt`, ESRGAN 0. Sprawdzone
+  wszystkie 4257 WebP (produkty + banery): w RIFF tylko chunk `VP8` — bez EXIF, XMP, ICC i znacznika AI C2PA.
+- **Podmiana lokalnie i na produkcji**: po 2883 zdjęcia. Na serwer poszły tylko WebP różniące się od stanu
+  na serwerze (md5 z `_sb24_gfx_id` + `_sb24_poprawione`) — 2884 pliki, 112 MB w tar przez pscp do `../wdrozenie/`.
+  Przed zmianą kopia `~/domains/swiatbizuterii24.pl/kopie/2026-10-29-zdjecia-chatgpt/` (baza + `uploads.tar`, 490 MB).
+  Po: WP Fastest Cache wyczyszczony, strona 200, miniatura z serwera bez metadanych.
+- `importuj-tresci.php`: katalog WebP z `SB24_WEBP` (zmienna środowiskowa), domyślnie `/import/dane/zdjecia-webp` —
+  ten sam skrypt działa w kontenerze i na serwerze:
+  `SB24_WEBP=<abs>/wdrozenie/zdjecia-webp wp eval-file ../wdrozenie/importuj-tresci.php zdjecia`.
+- 8 załączników miało `_sb24_poprawione_zrodlo = esrgan`, choć plik był już z ChatGPT (md5 identyczne — import pomijał
+  je i nie odświeżał etykiety). Poprawione zapytaniem lokalnie i na serwerze: `chatgpt` 4222.
+
+### Decyzje / pułapki
+
+- **Uśpienie Windows zatrzymuje skrypt na godziny.** `Atomics.wait` (czekanie na limit) i `timeout` w
+  `execFileSync` liczą czas bez snu — po uśpieniu skrypt czekał do 5 h po minięciu limitu, a pojedyncze wywołanie
+  Codexa „wisiało” 5–8,5 h. Poprawka w `popraw-chatgpt.mjs`: czekanie po minucie według zegara ściennego.
+  Wywołania Codexa przerwanego snem nie poprawiono (rzadkie; po obudzeniu i tak kończy się błędem i idzie dalej).
+- **Claude Code wyłącza zadania w tle przy braku pamięci** (najczęściej zaraz po obudzeniu komputera). Liczy się
+  pamięć zarezerwowana (commit), nie sam wolny RAM: przy ~30 GB / 63,7 GB skrypt chodził, przy 40+ GB bywał
+  zabijany. Pomogło `wsl --shutdown` (−10 GB) i zamknięcie club-manager-api (28 procesów node, 5,4 GB).
+  Na długie przebiegi: osobny terminal albo `CLAUDE_CODE_DISABLE_BG_SHELL_PRESSURE_REAP=1`.
+- Limit ChatGPT na generowanie obrazów: ~4–5 h pracy, potem ~2 h przerwy; skrypt czeka sam.
+- Wykrywanie C2PA po bajtach `c2pa` daje fałszywe trafienia (losowe bajty w strumieniu VP8) — sprawdzać chunki RIFF.
+- Zdjęcie **4724-8557** (2. zdjęcie produktu 4724) nie ma załącznika w WordPressie ani lokalnie, ani na serwerze —
+  pominięte przez import; reszta zdjęć produktu podmieniona.
+
+### W toku
+
+1. Do usunięcia pliki robocze: lokalnie `tmp/wdrozenie-zdjec/`, `tmp/test.webp`, `tmp/poprawa-zdjec/*`;
+   na serwerze `../wdrozenie/zdjecia-webp/`, `zdjecia-webp.tar`, `importuj-tresci.php`.
+2. Sprawdzić, czemu 4724-8557 nie ma załącznika (import katalogu).
+3. Od właściciela: płatności (PayU, przelew, pobranie), regulamin, faktury.
+
+Powiązania: [[import-woocommerce]], [[konfiguracja-sklepu]],
+[[DZIENNIK#§12 — 2026-10-22 — Sklep na produkcji, strony informacyjne z nowymi adresami, wdrożenia przez SSH|§12]],
+[[DZIENNIK#§13 — 2026-10-23 — Dane strukturalne produktu: ostrzeżenie „brak validFrom” w Search Console|§13]].
